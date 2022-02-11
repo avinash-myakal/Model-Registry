@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv(verbose=True)
 
-DATA_FOLDER = os.path.join(os.path.abspath(os.getcwd()), "backend", "data")
-
 
 class EnvSettings:
     @staticmethod
@@ -44,22 +42,6 @@ class EnvSettings:
     @staticmethod
     def postgres_db() -> str:
         return os.getenv("POSTGRES_DB", "flask_rest_api")
-
-    @staticmethod
-    def influxdb_host() -> str:
-        return os.getenv("INFLUXDB_HOST", "influxdb")
-
-    @staticmethod
-    def influxdb_port() -> int:
-        return int(os.getenv("INFLUXDB_PORT", "9286"))
-
-    @staticmethod
-    def influxdb_user() -> str:
-        return os.getenv("INFLUXDB_USER", "flask_rest_api")
-
-    @staticmethod
-    def influxdb_password() -> str:
-        return os.getenv("INFLUXDB_USER_PASSWORD", "flask_rest_api")
 
 
 class Config(object):
