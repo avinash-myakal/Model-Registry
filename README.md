@@ -1,13 +1,14 @@
-# Flask REST API Template
+
+
+
+## Flask REST API Template
 
 This is a skeleton application for a REST API. It contains a modular setup that should prevent annoying circular imports
-that are sometimes an issue when scaling up Flask applications. It also contains a ready to go Postgis setup, and a
+that are sometimes an issue when scaling up Flask applications. It also contains a
 generic library of code developed in other projects (under tno/shared).
 
 The key dependencies are:
 
-- [SQLAlchemy](https://www.sqlalchemy.org/): For Postgres / Postgis querying. Support for Flask-migrate is also added
-  in.
 - [Flask-smorest](https://flask-smorest.readthedocs.io): A REST API framework built on top
   of [marshmallow](https://marshmallow.readthedocs.io/).
 

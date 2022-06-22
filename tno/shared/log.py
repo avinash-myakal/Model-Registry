@@ -3,7 +3,7 @@ import logging.config
 
 from typing import List, Any
 import structlog
-from tno.flask_rest_api.settings import EnvSettings
+from tno.mmvib_registry.settings import EnvSettings
 from structlog.threadlocal import merge_threadlocal
 
 timestamper = structlog.processors.TimeStamper(fmt="iso")

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="TNO flask_rest_api",
+    name="MMvIB Model Registry",
     version="1.0",
     packages=["tno"],
 )

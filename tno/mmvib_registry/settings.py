@@ -24,24 +24,24 @@ class EnvSettings:
         return EnvSettings.env() == "prod"
 
     @staticmethod
-    def postgres_host() -> str:
-        return os.getenv("POSTGRES_HOST", "localhost")
+    def mongo_host() -> str:
+        return os.getenv("MONGO_HOST", "localhost")
 
     @staticmethod
-    def postgres_port() -> str:
-        return os.getenv("POSTGRES_PORT", "9232")
+    def mongo_port() -> str:
+        return os.getenv("MONGO_PORT", "9232")
 
     @staticmethod
-    def postgres_user() -> str:
-        return os.getenv("POSTGRES_USER", "flask_rest_api")
+    def mongo_user() -> str:
+        return os.getenv("MONGO_USER", "flask_rest_api")
 
     @staticmethod
-    def postgres_password() -> str:
-        return os.getenv("POSTGRES_PASSWORD", "flask_rest_api")
+    def mongo_password() -> str:
+        return os.getenv("MONGO_PASSWORD", "flask_rest_api")
 
     @staticmethod
-    def postgres_db() -> str:
-        return os.getenv("POSTGRES_DB", "flask_rest_api")
+    def mongo_db() -> str:
+        return os.getenv("MONGO_DB", "flask_rest_api")
 
 
 class Config(object):
@@ -49,11 +49,11 @@ class Config(object):
 
     SECRET_KEY = secrets.token_urlsafe(16)
 
-    API_TITLE = "TNO Flask REST API"
+    API_TITLE = "MMviB Registry REST API"
     API_VERSION = "v1"
     OPENAPI_VERSION = "3.0.2"
     OPENAPI_URL_PREFIX = "/"
-    OPENAPI_SWAGGER_UI_PATH = "/swagger-ui"
+    OPENAPI_SWAGGER_UI_PATH = "/openapi"
     OPENAPI_SWAGGER_UI_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/3.24.2/"
     OPENAPI_REDOC_PATH = "/redoc"
     OPENAPI_REDOC_URL = (
@@ -62,9 +62,9 @@ class Config(object):
 
     API_SPEC_OPTIONS = {
         "info": {
-            "description": "This is the TNO flask_rest_api backend API.",
+            "description": "This is the MMvIB Model adapter registry API.",
             "termsOfService": "https://www.tno.nl",
-            "contact": {"email": "test@swagger.io"},
+            "contact": {"email": "ewoud.werkman@tno.nl"},
             "license": {"name": "TBD", "url": "https://www.tno.nl"},
         }
     }
@@ -76,13 +76,13 @@ class Config(object):
     # JWT_ACCESS_TOKEN_EXPIRES = 3600
     # JWT_ERROR_MESSAGE_KEY = 'message'
 
-    POSTGRES_HOST = EnvSettings.postgres_host()
-    POSTGRES_PORT = EnvSettings.postgres_port()
-    POSTGRES_USER = EnvSettings.postgres_user()
-    POSTGRES_PASSWORD = EnvSettings.postgres_password()
-    POSTGRES_DB = EnvSettings.postgres_db()
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MONGO_HOST = EnvSettings.mongo_host()
+    MONGO_PORT = EnvSettings.mongo_port()
+    MONGO_USER = EnvSettings.mongo_user()
+    MONGO_PASSWORD = EnvSettings.mongo_password()
+    MONGO_DB = EnvSettings.mongo_db()
+    #SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
+    #SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_ECHO = True
 
 

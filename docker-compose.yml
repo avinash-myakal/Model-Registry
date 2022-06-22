@@ -3,10 +3,10 @@ version: "3.8"
 services:
   flask-rest-api:
     build: .
-    image: ci.tno.nl/flask-rest-api:dev
+    image: ci.tno.nl/multimodelling/mmvib-registry:dev
     volumes:
       - .:/code
-    command: ["gunicorn", "--reload", "tno.flask_rest_api.main:app", "-t 300", "-w 1", "-b :9200"]
+    command: ["gunicorn", "--reload", "tno.mmvib_registry.main:app", "-t 300", "-w 1", "-b :9200"]
     ports:
       - "9200:9200"
     env_file:

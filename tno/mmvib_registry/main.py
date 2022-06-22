@@ -2,8 +2,8 @@ import json
 from time import strftime
 
 from flask import request, send_from_directory
-from tno.flask_rest_api import create_app, db
-from tno.flask_rest_api.settings import EnvSettings
+from tno.mmvib_registry import create_app
+from tno.mmvib_registry.settings import EnvSettings
 
 from tno.shared.log import get_logger
 from werkzeug.exceptions import HTTPException
@@ -21,8 +21,12 @@ logger = get_logger("tno.flask_rest_api.main")
 
 app = create_app("tno.flask_rest_api.settings.%sConfig" % EnvSettings.env().capitalize())
 
-import tno.flask_rest_api.commands  # noqa
+#import tno.flask_rest_api.commands  # noqa
 
+
+@app.before_request
+def before_request():
+    print(request)
 
 @app.after_request
 def after_request(response):
@@ -46,13 +50,19 @@ def serve_static(path):
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
+    #if EnvSettings.
+    #logger.exception(e)
+
+    extra = ": "
+    if hasattr(e, "exc"): # add semantic information about errors json for marshmallow validation
+        extra = extra + str(e.exc)
     """Return JSON instead of HTML for HTTP errors."""
     response = e.get_response()
     response.data = json.dumps(
         {
             "code": e.code,
             "name": e.name,
-            "description": e.description,
+            "description": e.description + extra,
         }
     )
     response.content_type = "application/json"
@@ -69,5 +79,5 @@ if __name__ == "__main__":
     app.run(
         host=EnvSettings.flask_server_host(),
         port=EnvSettings.flask_server_port(),
-        use_reloader=False,
+        use_reloader=not EnvSettings.is_production(),
     )
