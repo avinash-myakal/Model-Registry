@@ -22,7 +22,7 @@ class RegistryAPI(MethodView):
 
     @api.response(200, ModelAdapter.Schema(many=True))
     def get(self):
-        """Get the list of Models currently registered in the registry"""
+        """Get the list of Model Adapters currently registered in the registry"""
 
         response = ModelAdapter.Schema().dump(db.get_all(), many=True)
         return jsonify(response)
@@ -30,7 +30,7 @@ class RegistryAPI(MethodView):
     @api.arguments(ModelAdapter.Schema())
     @api.response(201, ModelAdapter.Schema())
     def post(self, data):
-        """Add a new model"""
+        """Register a new model adapter"""
         data.id = str(uuid.uuid4())
         db.add_model(data)
         response = ModelAdapter.Schema().dump(data) # serialize correctly, including enums etc.
@@ -40,7 +40,7 @@ class RegistryAPI(MethodView):
 @api.route("/<model_id>")
 class UpdateRegistryAPI(MethodView):
     def get(self, model_id):
-        """Get the model by its ID from the registry"""
+        """Get the model adapter by its ID from the registry"""
         try:
             item = db.get_by_id(model_id)
             response = ModelAdapter.Schema().dump(item, many=False)
@@ -51,7 +51,7 @@ class UpdateRegistryAPI(MethodView):
     @api.arguments(ModelAdapter.Schema())
     @api.response(201, ModelAdapter.Schema())
     def put(self, update_data, model_id):
-        """Update a model by its ID"""
+        """Update a model adapter by its ID"""
         try:
             item = db.get_by_id(model_id)
             item.update(update_data)
@@ -62,7 +62,7 @@ class UpdateRegistryAPI(MethodView):
 
     @api.response(204)
     def delete(self, model_id):
-        """Delete model from repository"""
+        """Delete a model adapter from the repository"""
         try:
             db.delete(model_id)
         except ModelNotFoundException as e:
@@ -73,7 +73,7 @@ class SearchRegistryAPI(MethodView):
     @api.arguments(ModelAdapterSearchArgsSchema())
     @api.response(200, ModelAdapter.Schema(many=True))
     def post(self, data):
-        """Search for a model with specific attributes"""
+        """Search for a model adapter with specific attributes"""
         print ("search:", data)
         result = db.search(data)
         response = ModelAdapter.Schema().dump(result, many=True)

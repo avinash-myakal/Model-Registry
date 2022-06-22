@@ -28,7 +28,7 @@ def create_app(object_name):
     app.config.from_object(object_name)
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
-    env.init_app(app, env_file="../../.env")
+    env.init_app(app, env_file=".env")
     api.init_app(app)
 
     # Register blueprints.

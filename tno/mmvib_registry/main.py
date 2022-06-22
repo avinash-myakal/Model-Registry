@@ -19,7 +19,7 @@ from werkzeug.exceptions import HTTPException
 
 logger = get_logger("tno.flask_rest_api.main")
 
-app = create_app("tno.flask_rest_api.settings.%sConfig" % EnvSettings.env().capitalize())
+app = create_app("tno.mmvib_registry.settings.%sConfig" % EnvSettings.env().capitalize())
 
 #import tno.flask_rest_api.commands  # noqa
 

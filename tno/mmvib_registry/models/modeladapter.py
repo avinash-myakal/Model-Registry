@@ -11,7 +11,7 @@ from marshmallow import Schema, fields
 from marshmallow_enum import EnumField
 
 
-@dataclass(repr=False, eq=False)
+#@dataclass(repr=False, eq=False)
 class ModelAdapterState(Enum):
     READY = 0
     BUSY = 1

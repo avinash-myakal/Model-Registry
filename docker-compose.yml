@@ -1,7 +1,7 @@
-version: "3.8"
+version: "3.2"
 
 services:
-  flask-rest-api:
+  mmvib-registry:
     build: .
     image: ci.tno.nl/multimodelling/mmvib-registry:dev
     volumes:
