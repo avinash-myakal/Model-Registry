@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mmvib-registry-api
+  name: mmvib-registry-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mmvib-registry-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mmvib-registry-api
+    spec:
+      # This secret needs to be created manually:
+      # kubectl create secret docker-registry ciregistrykey --docker-server=ci.tno.nl --docker-username=<USER> --docker-password=<PASSWORD>- -n <NAMESPACE>
+      imagePullSecrets:
+        - name: ciregistrykey
+      containers:
+        - image: ci.tno.nl/multimodelling/mmvib-registry/api:latest
+          name: mmvib-registry-api
+          args:
+            - gunicorn
+            - tno.mmvib_registry.main:app
+            - -t 300
+            - -w 4
+            - -b :9200
+          env:
+            - name: ENV
+              value: prod
+          ports:
+            - containerPort: 9200
+          resources: {}
+          imagePullPolicy: Always
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mmvib-registry-api
+  name: mmvib-registry-api
+spec:
+  ports:
+    - port: 9200
+      targetPort: 9200
+  selector:
+    app: mmvib-registry-api

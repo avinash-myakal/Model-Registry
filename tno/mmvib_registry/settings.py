@@ -17,7 +17,7 @@ class EnvSettings:
 
     @staticmethod
     def flask_server_port() -> int:
-        return 9200
+        return 9900
 
     @staticmethod
     def is_production():
