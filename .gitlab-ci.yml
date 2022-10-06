@@ -26,7 +26,7 @@ before_script:
 #|  |_)  | |  `--'  | |  | |  `----.|  '--'  |
 #|______/   \______/  |__| |_______||_______/
 
-build-classifier:
+build:
   stage: build
   variables:
     IMAGE: $IMAGE_BASE/api
@@ -43,7 +43,7 @@ build-classifier:
 #|  '--'  ||  |____ |  |      |  `----.|  `--'  |     |  |
 #|_______/ |_______|| _|      |_______| \______/      |__|
 
-push-latest-classifier:
+push-latest:
   stage: deploy
   variables:
     IMAGE: $IMAGE_BASE/api
