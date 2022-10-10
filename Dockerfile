@@ -18,3 +18,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /code
 
 RUN pip install -e .
+
+CMD ["gunicorn", "tno.mmvib_registry.main:app", "-t 300", "-w 4", "-b :9900"]
