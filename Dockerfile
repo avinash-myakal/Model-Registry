@@ -19,4 +19,4 @@ COPY . /code
 
 RUN pip install -e .
 
-CMD ["gunicorn", "tno.mmvib_registry.main:app", "-t 300", "-w 4", "-b :9900"]
+CMD ["gunicorn", "tno.mmvib_registry.main:app", "-t 300", "-w 1", "-b :9900"]
