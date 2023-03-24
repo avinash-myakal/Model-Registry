@@ -1,13 +1,17 @@
-from flask import Blueprint, Flask
+from flask import Flask
 from flask_cors import CORS
 
 from flask_dotenv import DotEnv
-from flask_smorest import Api, Blueprint
+from flask_smorest import Api
+from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from tno.mmvib_registry.settings import EnvSettings
+
 api = Api()
 env = DotEnv()
+sa = SQLAlchemy()
 
 
 def create_app(object_name):
@@ -40,6 +44,10 @@ def create_app(object_name):
 
     CORS(app, resources={r"/*": {"origins": "*"}})
 
+    if EnvSettings.db_type() == "postgres":
+        sa.init_app(app)
+        with app.app_context():
+            sa.create_all()
     logger.info("Finished setting up app.")
 
     return app

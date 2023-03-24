@@ -43,6 +43,34 @@ class EnvSettings:
     def mongo_db() -> str:
         return os.getenv("MONGO_DB", "flask_rest_api")
 
+    @staticmethod
+    def db_type() -> str:
+        return os.getenv("DB_TYPE", "memorydb")
+
+    @staticmethod
+    def postgres_host() -> str:
+        return os.getenv("POSTGRES_HOST", "localhost")
+
+    @staticmethod
+    def postgres_port() -> int:
+        return int(os.getenv("POSTGRES_PORT", "9932"))
+
+    @staticmethod
+    def postgres_user() -> str:
+        return os.getenv("POSTGRES_USER", "modelregistry")
+
+    @staticmethod
+    def postgres_password() -> str:
+        return os.getenv("POSTGRES_PASSWORD", "modelregistry").replace("\n", "")
+
+    @staticmethod
+    def postgres_db() -> str:
+        return os.getenv("POSTGRES_DB", "modelregistry")
+
+    @staticmethod
+    def sqlalchemy_database_uri():
+        return f"postgresql+psycopg2://{EnvSettings.postgres_user()}:{EnvSettings.postgres_password()}@{EnvSettings.postgres_host()}:{EnvSettings.postgres_port()}/{EnvSettings.postgres_db()}"
+
 
 class Config(object):
     """Generic config for all environments."""
@@ -75,13 +103,14 @@ class Config(object):
     # JWT_SECRET_KEY = 'super-secret'  # Change this!
     # JWT_ACCESS_TOKEN_EXPIRES = 3600
     # JWT_ERROR_MESSAGE_KEY = 'message'
+    if EnvSettings.db_type() == "postgres":
+        SQLALCHEMY_DATABASE_URI = EnvSettings.sqlalchemy_database_uri()
 
     MONGO_HOST = EnvSettings.mongo_host()
     MONGO_PORT = EnvSettings.mongo_port()
     MONGO_USER = EnvSettings.mongo_user()
     MONGO_PASSWORD = EnvSettings.mongo_password()
     MONGO_DB = EnvSettings.mongo_db()
-    #SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}"
     #SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_ECHO = True
 

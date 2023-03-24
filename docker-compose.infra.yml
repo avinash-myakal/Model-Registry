@@ -1,23 +1,26 @@
 version: "3.8"
 
 services:
-  postgis:
-    image: postgis/postgis:latest
+  postgres:
+    image: postgres:15
     env_file:
       - ".env.docker"
     ports:
-      - "9232:5432"
+      - "9932:5432"
     volumes:
-      - postgis-data:/var/lib/postgresql/data
-    restart: unless-stopped
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-modelregistry}
+      - POSTGRES_USER=${POSTGRES_DB_USER:-modelregistry}
+      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWD:-modelregistry}
 
   pgadminer:
     image: adminer
     environment:
       - ADMINER_DESIGN=lucas-sandery
-      - ADMINER_DEFAULT_SERVER=postgis
+      - ADMINER_DEFAULT_SERVER=postgres
     ports:
-      - "9280:8080"
+      - "9980:8080"
 
 volumes:
-  postgis-data:
+  postgres-data:

@@ -1,29 +1,23 @@
-import uuid
-from datetime import datetime
-from enum import Enum
-from typing import List
-
-from werkzeug.exceptions import HTTPException
-
-from tno.mmvib_registry.models.modeladapter import ModelAdapter, ModelAdapterState
+from tno.mmvib_registry.db.base import ModelNotFoundException, RegistryDB
+from tno.mmvib_registry.models.modeladapter import ModelAdapter
 
 
-class MemoryDB:
+class MemoryDB(RegistryDB):
     def __init__(self):
         print("init db")
-        self._models: List[ModelAdapter] = []
-        dummy = ModelAdapter(name="ESSIM", version="1.0", last_seen=datetime.now(), max_workers=1, used_workers=1,
-                             status=ModelAdapterState.BUSY, uri="https://essim.hesi.energy/api",
-                             owner="Edwin", id="uniqueid")
-        self._models.append(dummy)
+        self._models: list[ModelAdapter] = []
 
-    def get_all(self) -> List[ModelAdapter]:
-
+    def get_all(self) -> list[ModelAdapter]:
         return self._models
 
-    def add_model(self, model:ModelAdapter):
+    def add_model(self, model: ModelAdapter):
         print("Adding model")
         self._models.append(model)
+
+    def update_model(self, model_id: str, update_data) -> ModelAdapter:
+        item = self.get_by_id(model_id)
+        item.update(update_data)
+        return item
 
     def get_by_id(self, model_id: str) -> ModelAdapter:
         for m in self._models:
@@ -35,7 +29,7 @@ class MemoryDB:
         m: ModelAdapter = self.get_by_id(model_id)
         self._models.remove(m)
 
-    def search(self, filter: dict) -> List[ModelAdapter]:
+    def search(self, filter: dict) -> list[ModelAdapter]:
         result_list = []
         for m in self._models:
             is_match = True
@@ -51,9 +45,3 @@ class MemoryDB:
             if is_match:
                 result_list.append(m)
         return result_list
-
-
-class ModelNotFoundException(Exception):
-    def __init__(self, msg: str):
-        self.message = msg
-

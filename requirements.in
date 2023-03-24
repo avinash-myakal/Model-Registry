@@ -3,8 +3,9 @@ gunicorn
 Flask
 Flask-CORS
 flask-reverse-proxy-fix
-flask-smorest
+flask-smorest==0.40.0
 Flask-dotenv
+Flask-sqlalchemy
 marshmallow
 marshmallow_dataclass[enum]
 marshmallow_enum
@@ -12,6 +13,8 @@ colorama
 structlog
 python-dotenv
 
+SQLAlchemy
+psycopg2-binary
 
 requests
 
