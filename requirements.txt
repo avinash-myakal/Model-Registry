@@ -129,6 +129,9 @@ sqlalchemy==2.0.6
     # via
     #   -r requirements.in
     #   flask-sqlalchemy
+    #   sqlalchemy-utils
+sqlalchemy-utils==0.40.0
+    # via -r requirements.in
 structlog==21.5.0
     # via -r requirements.in
 tomli==2.0.1

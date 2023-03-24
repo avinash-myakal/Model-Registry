@@ -4,6 +4,8 @@ from flask_cors import CORS
 from flask_dotenv import DotEnv
 from flask_smorest import Api
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -46,6 +48,9 @@ def create_app(object_name):
 
     if EnvSettings.db_type() == "postgres":
         sa.init_app(app)
+        engine = create_engine(EnvSettings.sqlalchemy_database_uri())
+        if not database_exists(engine.url):
+            create_database(engine.url)
         with app.app_context():
             sa.create_all()
     logger.info("Finished setting up app.")

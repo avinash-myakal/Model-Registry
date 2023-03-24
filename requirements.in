@@ -15,6 +15,7 @@ python-dotenv
 
 SQLAlchemy
 psycopg2-binary
+sqlalchemy-utils
 
 requests
 
