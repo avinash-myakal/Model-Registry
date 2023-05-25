@@ -15,7 +15,7 @@ class ModelAdapterSQL(sa.Model):
     max_workers: Mapped[int]
     used_workers: Mapped[int]
     status: Mapped[ModelAdapterState]
-    owner: Mapped[str]
+    owner: Mapped[Optional[str]]
     last_seen: Mapped[datetime] = mapped_column(default=datetime.utcnow())
 
     @classmethod
