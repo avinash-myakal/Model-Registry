@@ -23,25 +23,25 @@ class EnvSettings:
     def is_production():
         return EnvSettings.env() == "prod"
 
-    @staticmethod
-    def mongo_host() -> str:
-        return os.getenv("MONGO_HOST", "localhost")
-
-    @staticmethod
-    def mongo_port() -> str:
-        return os.getenv("MONGO_PORT", "9232")
-
-    @staticmethod
-    def mongo_user() -> str:
-        return os.getenv("MONGO_USER", "flask_rest_api")
-
-    @staticmethod
-    def mongo_password() -> str:
-        return os.getenv("MONGO_PASSWORD", "flask_rest_api")
-
-    @staticmethod
-    def mongo_db() -> str:
-        return os.getenv("MONGO_DB", "flask_rest_api")
+    # @staticmethod
+    # def mongo_host() -> str:
+    #     return os.getenv("MONGO_HOST", "localhost")
+    #
+    # @staticmethod
+    # def mongo_port() -> str:
+    #     return os.getenv("MONGO_PORT", "9232")
+    #
+    # @staticmethod
+    # def mongo_user() -> str:
+    #     return os.getenv("MONGO_USER", "flask_rest_api")
+    #
+    # @staticmethod
+    # def mongo_password() -> str:
+    #     return os.getenv("MONGO_PASSWORD", "flask_rest_api")
+    #
+    # @staticmethod
+    # def mongo_db() -> str:
+    #     return os.getenv("MONGO_DB", "flask_rest_api")
 
     @staticmethod
     def db_type() -> str:
@@ -106,11 +106,11 @@ class Config(object):
     if EnvSettings.db_type() == "postgres":
         SQLALCHEMY_DATABASE_URI = EnvSettings.sqlalchemy_database_uri()
 
-    MONGO_HOST = EnvSettings.mongo_host()
-    MONGO_PORT = EnvSettings.mongo_port()
-    MONGO_USER = EnvSettings.mongo_user()
-    MONGO_PASSWORD = EnvSettings.mongo_password()
-    MONGO_DB = EnvSettings.mongo_db()
+    # MONGO_HOST = EnvSettings.mongo_host()
+    # MONGO_PORT = EnvSettings.mongo_port()
+    # MONGO_USER = EnvSettings.mongo_user()
+    # MONGO_PASSWORD = EnvSettings.mongo_password()
+    # MONGO_DB = EnvSettings.mongo_db()
     #SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_ECHO = True
 

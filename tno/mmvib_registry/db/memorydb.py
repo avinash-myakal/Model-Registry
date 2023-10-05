@@ -12,7 +12,13 @@ class MemoryDB(RegistryDB):
 
     def add_model(self, model: ModelAdapter):
         print("Adding model")
+        existing = [m for m in self._models if m.uri.lower() == model.uri.lower()]
+        if len(existing) > 0:
+            print(f"Removing {existing[0]}, as the URI is the same as the added one: {model}")
+            model.id = existing[0].id  # keep same ID
+            self._models.remove(existing[0])
         self._models.append(model)
+        return model
 
     def update_model(self, model_id: str, update_data) -> ModelAdapter:
         item = self.get_by_id(model_id)

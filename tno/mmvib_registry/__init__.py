@@ -52,6 +52,7 @@ def create_app(object_name):
         if not database_exists(engine.url):
             create_database(engine.url)
         with app.app_context():
+            logger.info(f"Creating tables for {EnvSettings.db_type()}")
             sa.create_all()
     logger.info("Finished setting up app.")
 

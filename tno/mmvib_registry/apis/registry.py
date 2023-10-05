@@ -29,10 +29,12 @@ class RegistryAPI(MethodView):
     @api.arguments(ModelAdapter.Schema())
     @api.response(201, ModelAdapter.Schema())
     def post(self, data):
-        """Register a new model adapter"""
+        """Register a new model adapter
+        If the uri is already in the database, this will cause the existing registration to be overwritten
+        (this should be done by a PUT, but is not implemented in the adapters at the moment)"""
         data.id = str(uuid.uuid4())
-        registrydb.add_model(data)
-        response = ModelAdapter.Schema().dump(data) # serialize correctly, including enums etc.
+        model = registrydb.add_model(data)
+        response = ModelAdapter.Schema().dump(model) # serialize correctly, including enums etc.
         return jsonify(response)
 
 
@@ -41,6 +43,7 @@ class UpdateRegistryAPI(MethodView):
     def get(self, model_id):
         """Get the model adapter by its ID from the registry"""
         try:
+            print("get by model ID", model_id)
             item = registrydb.get_by_id(model_id)
             response = ModelAdapter.Schema().dump(item, many=False)
             return jsonify(response)

@@ -1,3 +1,5 @@
+from typing import Type
+
 from tno.mmvib_registry import sa
 from tno.mmvib_registry.db.base import RegistryDB
 from tno.mmvib_registry.models.dbmodels import ModelAdapterSQL
@@ -13,9 +15,15 @@ class SqlDB(RegistryDB):
         return [model_adapter.to_model_adapter() for model_adapter in model_adapters]
 
     def add_model(self, model: ModelAdapter):
-        model_adapter = ModelAdapterSQL.from_model_adapter(model)
-        sa.session.add(model_adapter)
+        model_adapter_sql = ModelAdapterSQL.from_model_adapter(model)
+        existing: Type[ModelAdapterSQL] | None = sa.session.query(ModelAdapterSQL).where(ModelAdapterSQL.uri == model_adapter_sql.uri).first()
+        if existing is not None:
+            print(f"Updating model {model_adapter_sql.name}, as {model_adapter_sql.uri}, is already present")
+            model_adapter_sql.id = existing.id  # keep same ID, but update the rest.
+            sa.session.delete(existing)
+        sa.session.add(model_adapter_sql)
         sa.session.commit()
+        return model_adapter_sql.to_model_adapter()
 
     def update_model(self, model_id: str, update_data) -> ModelAdapter:
         model_adapter: ModelAdapterSQL | None = sa.session.query(ModelAdapterSQL).get(model_id)
@@ -36,6 +44,7 @@ class SqlDB(RegistryDB):
         if model_adapter is None:
             raise ModelNotFoundException("Cant find model with id=" + model_id)
         sa.session.delete(model_adapter)
+        sa.session.commit()
 
     def search(self, filter: dict) -> list[ModelAdapter]:
         # TODO: This should work with nice SQL queries.
