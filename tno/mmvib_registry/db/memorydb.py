@@ -4,7 +4,7 @@ from tno.mmvib_registry.models.modeladapter import ModelAdapter
 
 class MemoryDB(RegistryDB):
     def __init__(self):
-        print("init db")
+        print("Init memory db: empty db")
         self._models: list[ModelAdapter] = []
 
     def get_all(self) -> list[ModelAdapter]:
@@ -43,7 +43,7 @@ class MemoryDB(RegistryDB):
                 if hasattr(m, k):
                     value = m.__getattribute__(k)
                     if isinstance(value, str): # do some 'intelligent' matching
-                        is_match = is_match and (v.lower() in value.lower())
+                        is_match = is_match and (v.lower() == value.lower())
                     else:
                         is_match = is_match and (value == v)
                 if not is_match: # no match, don't look further...
