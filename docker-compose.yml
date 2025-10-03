@@ -1,19 +1,45 @@
-version: "3.2"
-
 services:
+  db:
+    image: postgres:15
+    container_name: mmvib-registry-db
+    environment:
+      POSTGRES_USER: modelregistry
+      POSTGRES_PASSWORD: modelregistry
+      POSTGRES_DB: modelregistry
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U modelregistry -d modelregistry"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - mmvib-net
+
   mmvib-registry:
     build: .
+    container_name: mmvib-registry
     volumes:
       - .:/code
-    command: ["gunicorn", "--reload", "tno.mmvib_registry.main:app", "-t 300", "-w 1", "-b :9200"]
+    command: ["gunicorn", "tno.mmvib_registry.main:app", "-w", "2", "-b", ":9200", "-t", "300"]
     ports:
       - "9200:9200"
     env_file:
-      - ".env.docker"
+      - .env.docker
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:9200/status/', timeout=2).status in (200,204) else 1)\""]
+      interval: 10s
+      timeout: 3s
+      retries: 10
     networks:
       - mmvib-net
 
 networks:
   mmvib-net:
-    external:
-      name: mmvib-net
+    external: true
+
+volumes:
+  pgdata:
